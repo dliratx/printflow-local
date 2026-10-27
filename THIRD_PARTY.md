@@ -42,3 +42,9 @@ The bundled unmodified `models/calibration-assets/3DBenchy.stl` has SHA-256
 Its download and license sources are retained in `source.json` beside the asset.
 The [current official license](https://www.3dbenchy.com/license/) was checked on
 October 27, 2026. Keep the original scale and geometry when comparing benchmarks.
+
+The documentation's image-to-3D screenshot displays the unmodified TripoSR
+`examples/teapot.png` reference at the source revision pinned above. Its SHA-256
+is `66b0b8f7dd759e97d20665999885e0548f96c95dadee6bf9762ccd877c596b8c`.
+The upstream MIT notice is retained in `docs/screenshots/TripoSR-LICENSE.txt`.
+See [screenshot provenance](docs/SCREENSHOTS.md#capture-and-attribution-notes).

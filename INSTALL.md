@@ -1,5 +1,13 @@
 # Install PrintFlow Local
 
+**New installation?** Follow [the step-by-step quick start](docs/GETTING_STARTED.md)
+first, including [connecting Codex](docs/CODEX_SETUP.md). This guide covers advanced
+host/container deployment, model workers, GPU prerequisites and troubleshooting.
+
+- [Windows quick start](docs/GETTING_STARTED.md#1-check-the-requirements)
+- [Connect the assistant and optional MCP client](docs/CODEX_SETUP.md)
+- [How native slicing and calibration work](docs/SLICER_AND_CALIBRATION.md)
+
 PrintFlow's source is open source. Web, portal MCP and CAD are separate Linux
 containers. Image-to-3D is an optional fourth container. The native Snapmaker Orca
 bridge runs on the Windows machine that has Orca and the signed-in Codex CLI.
