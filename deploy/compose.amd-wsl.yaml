@@ -1,0 +1,16 @@
+# Docker Engine must run inside WSL2. Paths refer to that Linux distribution.
+services:
+  image3d:
+    build:
+      args:
+        BASE_IMAGE: rocm/pytorch:rocm7.2_ubuntu24.04_py3.12_pytorch_release_2.9.1
+        TORCH_INSTALL: provided
+    environment:
+      PRINTFLOW_DEVICE: cuda
+      HSA_ENABLE_DXG_DETECTION: "1"
+    devices: ["/dev/dxg:/dev/dxg"]
+    volumes:
+      - /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so:ro
+      - /opt/rocm/lib/librocdxg.so:/usr/lib/librocdxg.so:ro
+      - /opt/rocm/share/rocdxg/dids.conf:/usr/share/rocdxg/dids.conf:ro
+    shm_size: 4gb

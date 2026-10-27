@@ -1,0 +1,75 @@
+name: printflow-local
+x-common: &common
+  restart: unless-stopped
+  init: true
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  tmpfs: ["/tmp:size=512m,mode=1777"]
+  logging:
+    driver: json-file
+    options: {max-size: "10m", max-file: "3"}
+x-health: &health
+  interval: 20s
+  timeout: 8s
+  start_period: 60s
+  retries: 3
+services:
+  web:
+    <<: *common
+    image: printflow/web:${PRINTFLOW_VERSION:-0.3.0}
+    build: .
+    ports: ["127.0.0.1:8840:8000"]
+    environment:
+      PRINTFLOW_HOST_URL: ${PRINTFLOW_HOST_URL:-http://host.docker.internal:8841}
+      PRINTFLOW_BRIDGE_TOKEN: ${PRINTFLOW_BRIDGE_TOKEN:?Run the installer init command first}
+      PRINTFLOW_DATA_DIR: /data
+      PRINTFLOW_DESIGN_URL: http://design:8000
+      PRINTFLOW_IMAGE3D_URL: http://image3d:8000
+      PRINTFLOW_SEARCH_URL: ${PRINTFLOW_SEARCH_URL:-}
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    volumes:
+      - ./.runtime/printflow:/data
+      - ./models:/workspace/models
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5)"]
+  mcp:
+    <<: *common
+    image: printflow/web:${PRINTFLOW_VERSION:-0.3.0}
+    build: .
+    command: [python, -m, printflow.portal_mcp]
+    environment:
+      PRINTFLOW_API_URL: http://web:8000
+      PRINTFLOW_MCP_BIND: 0.0.0.0
+      PRINTFLOW_MCP_PORT: "8001"
+    ports: ["127.0.0.1:8842:8001"]
+    depends_on:
+      web: {condition: service_healthy}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=5)"]
+  design:
+    <<: *common
+    image: printflow/design:${PRINTFLOW_VERSION:-0.3.0}
+    build: {context: ., dockerfile: services/design/Dockerfile}
+    environment:
+      PRINTFLOW_BRIDGE_TOKEN: ${PRINTFLOW_BRIDGE_TOKEN:?Run the installer init command first}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+  image3d:
+    <<: *common
+    profiles: [image3d]
+    image: printflow/image3d:${PRINTFLOW_VERSION:-0.3.0}-${PRINTFLOW_GPU_PROFILE:-cpu}
+    build:
+      context: .
+      dockerfile: services/image3d/Dockerfile
+    tmpfs: ["/tmp:size=2g,mode=1777"]
+    environment:
+      PRINTFLOW_BRIDGE_TOKEN: ${PRINTFLOW_BRIDGE_TOKEN:?Run the installer init command first}
+      PRINTFLOW_DEVICE: cpu
+    volumes: ["./weights/triposr:/weights"]
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]

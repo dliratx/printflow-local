@@ -1,0 +1,11 @@
+services:
+  image3d:
+    build:
+      args:
+        BASE_IMAGE: rocm/pytorch:rocm7.2_ubuntu24.04_py3.12_pytorch_release_2.9.1
+        TORCH_INSTALL: provided
+    environment:
+      PRINTFLOW_DEVICE: cuda
+    devices: ["/dev/kfd:/dev/kfd", "/dev/dri:/dev/dri"]
+    group_add: ["${PRINTFLOW_VIDEO_GID:?Run init --gpu amd-linux}", "${PRINTFLOW_RENDER_GID:?Run init --gpu amd-linux}"]
+    shm_size: 4gb

@@ -1,0 +1,11 @@
+{
+  "printer": "Snapmaker U1",
+  "nozzle_diameter_mm": 0.4,
+  "hotend": "Factory standard-flow stainless steel, 0.4 mm; verify against the target printer",
+  "build_plate": "Textured PEI Plate",
+  "priority": "maximum_finish_and_easy_support_removal",
+  "material": null,
+  "filament_brand": null,
+  "physical_calibration_verified": false,
+  "policy": "Choose settings per model. Compare quality-preserving candidates using real slicer estimates. Preserve color painting and tool assignments. Do not promise best settings without physical print feedback."
+}

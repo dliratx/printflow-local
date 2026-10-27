@@ -1,0 +1,19 @@
+{
+  "method": "mcpServer/elicitation/request",
+  "id": 0,
+  "params": {
+    "threadId": "diagnostic-thread",
+    "turnId": "diagnostic-turn",
+    "serverName": "snapmaker-u1",
+    "mode": "form",
+    "_meta": {
+      "codex_approval_kind": "mcp_tool_call",
+      "persist": ["session", "always"],
+      "tool_description": "Read the owner's hardware, material uncertainties and quality priorities.",
+      "tool_params": {},
+      "tool_params_display": []
+    },
+    "message": "Allow the snapmaker-u1 MCP server to run tool \"u1_preferences\"?",
+    "requestedSchema": {"type": "object", "properties": {}}
+  }
+}

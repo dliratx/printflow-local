@@ -1,0 +1,33 @@
+.venv/
+.venv-design/
+.venv-image3d/
+backups/
+weights/
+__pycache__/
+.pytest_cache/
+*.pyc
+.runtime/
+runs/
+validation/*probe/
+validation/*native/
+vendor/*/.git/
+validation/codex-config-before-mcp.toml
+.env
+.env.*
+!.env.example
+# Local owner instructions and historical Spanish notes are not public docs.
+/AGENTS.md
+/LEEME.md
+research/
+# Only the attributed benchmark is part of the public source distribution.
+/models/*
+!/models/calibration-assets/
+/models/calibration-assets/*
+!/models/calibration-assets/3DBenchy.stl
+!/models/calibration-assets/source.json
+*.log
+*.pid
+*.egg-info/
+*.zip
+dist/
+validation/
